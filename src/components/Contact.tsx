@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,19 +53,19 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      details: "hello@beracode-ai.com",
+      details: "info@beracodeai.com",
       description: "Send us an email anytime"
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: "+1 (555) 123-4567",
+      details: "+2347062029109",
       description: "Mon-Fri from 8am to 5pm"
     },
     {
       icon: MapPin,
       title: "Visit Us",
-      details: "123 AI Innovation Street, Tech City, TC 12345",
+      details: "Brains and Hammers City, Life Camp, Abuja, Nigeria",
       description: "Our headquarters location"
     }
   ];
@@ -168,7 +167,7 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      placeholder="+1 (555) 123-4567"
+                      placeholder="+2347062029109"
                       className="h-12"
                     />
                   </div>
