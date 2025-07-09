@@ -37,14 +37,35 @@ const About = () => {
   const team = [
     {
       name: "Mr. Frank Ezuruike",
-      role: "Chief Executive Officer",
-      description: "Visionary leader with extensive experience in AI technology and business development. Frank drives the strategic direction of BeraCode AI and ensures our solutions deliver maximum value to clients.",
+      role: "CEO/Founder",
+      education: "B.Sc Computer Science (Covenant University), M.Sc Information Technology (University of Lagos)",
+      description: "Mr. Frank Ezuruike serves as the CEO and Founder of BeraCode AI Ltd, a pioneering technology enterprise at the forefront of artificial intelligence innovation. With a strong foundation in both theoretical and practical aspects of technology, he leads the company's strategic vision and technological advancement.",
+      certifications: [
+        "Oracle Cloud Infrastructure Certified DevOps Professional",
+        "Oracle Exadata Database Machine X9M Certified Implementation Specialist",
+        "Hitachi Vantara Qualified Professional - Pre-sales Data Infrastructure Foundation",
+        "Oracle Cloud Infrastructure Certified Security Professional",
+        "Oracle Cloud Database Services Certified Professional",
+        "Oracle Database Administration I & II",
+        "Oracle Cloud Infrastructure Developer Certified Associate",
+        "Oracle Cloud Infrastructure Cloud Operations Certified Associate",
+        "Oracle Cloud Platform Systems Management Certified Associate",
+        "Oracle Autonomous Database Cloud Certified Specialist",
+        "Oracle Cloud Platform Identity and Security Management Certified Associate",
+        "Oracle Cloud Infrastructure Certified Architect Associate & Professional",
+        "Oracle SRM Cloud Service Certified Implementation Specialist",
+        "Cisco Business Architecture Certified Analyst",
+        "Oracle Certified Associate & Professional, Oracle Solaris 11 System Administrator",
+        "Oracle Cloud Project Management Practitioner"
+      ],
       initials: "FE"
     },
     {
-      name: "Dr. Mrs. Berachach Ezuruike",
-      role: "Chief Technology Officer",
-      description: "Distinguished technologist and AI researcher with deep expertise in machine learning and software engineering. Dr. Berachach leads our technical innovation and ensures the highest quality in our AI solutions.",
+      name: "Dr. Mrs. Berachah Iyke Ezuruike",
+      role: "Co-Founder",
+      education: "Medical Doctor (Shengai University, China)",
+      description: "Dr. Mrs. Berachah Iyke Ezuruike is the Co-Founder of BeraCode AI Ltd. A distinguished Medical Doctor by profession, she brings a unique perspective grounded in rigorous analysis and a deep understanding of complex systems. Her diverse background equips her with valuable insights into real-world applications and the critical importance of precision and reliability – principles that are fundamental to the AI solutions developed at BeraCode AI.",
+      certifications: [],
       initials: "BE"
     }
   ];
@@ -106,19 +127,50 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {team.map((member, index) => (
               <Card key={index} className="p-8 shadow-lg card-hover border-0">
-                <CardContent className="pt-6 text-center">
-                  <Avatar className="mx-auto w-24 h-24 mb-6">
-                    <AvatarImage src="" alt={member.name} />
-                    <AvatarFallback className="text-xl font-bold bg-gradient-to-r from-primary to-accent text-white">
-                      {member.initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <h4 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h4>
-                  <p className="text-primary font-semibold mb-4">{member.role}</p>
-                  <p className="text-gray-600 leading-relaxed">{member.description}</p>
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center mb-6">
+                    <Avatar className="w-24 h-24 mb-4">
+                      <AvatarImage src="" alt={member.name} />
+                      <AvatarFallback className="text-xl font-bold bg-gradient-to-r from-primary to-accent text-white">
+                        {member.initials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <h4 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h4>
+                    <p className="text-primary font-semibold mb-2">{member.role}</p>
+                    <p className="text-sm text-gray-500 mb-4 italic">{member.education}</p>
+                  </div>
+                  
+                  <p className="text-gray-600 leading-relaxed mb-6">{member.description}</p>
+                  
+                  {member.certifications.length > 0 && (
+                    <div>
+                      <h5 className="text-lg font-semibold text-gray-900 mb-3">Professional Certifications:</h5>
+                      <div className="space-y-1">
+                        {member.certifications.slice(0, 8).map((cert, certIndex) => (
+                          <p key={certIndex} className="text-sm text-gray-600 leading-relaxed">
+                            • {cert}
+                          </p>
+                        ))}
+                        {member.certifications.length > 8 && (
+                          <details className="mt-2">
+                            <summary className="text-sm text-primary cursor-pointer hover:text-primary/80 font-medium">
+                              View {member.certifications.length - 8} more certifications
+                            </summary>
+                            <div className="mt-2 space-y-1">
+                              {member.certifications.slice(8).map((cert, certIndex) => (
+                                <p key={certIndex} className="text-sm text-gray-600 leading-relaxed">
+                                  • {cert}
+                                </p>
+                              ))}
+                            </div>
+                          </details>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
