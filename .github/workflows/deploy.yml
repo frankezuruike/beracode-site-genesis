@@ -28,73 +28,67 @@ jobs:
         run: |
           bun run build
 
-      # --- IMPORTANT MODIFICATION: Clean and Prepare Target Directory on Server ---
-      # This step needs to ensure the directory exists and has correct ownership for the *Nginx user*
-      - name: Prepare Target Directory on Server and Set Initial Permissions
+      # --- CRUCIAL MODIFICATION: Prepare Target Directory on Server for opc user ---
+      # This step ensures the directory exists and is writable by the 'opc' user for rsync
+      - name: Prepare Target Directory for Rsync
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: opc
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Ensure the parent directories exist and are accessible
+            # Ensure the parent directories exist
             sudo mkdir -p /var/www/html/beracode
 
-            # Determine Nginx user from its config (common on Oracle Linux/CentOS is 'nginx')
-            NGINX_USER=$(grep -Po '^\s*user\s+\K[^;]+' /etc/nginx/nginx.conf | head -1 || echo 'nginx')
+            # Set ownership of the target directory to 'opc' (your SSH user)
+            # This allows rsync (running as 'opc') to write files
+            sudo chown -R opc:opc /var/www/html/beracode
 
-            # Set ownership of the target directory to the Nginx user
-            # This is crucial so Nginx can write/read/execute here if needed
-            sudo chown -R $NGINX_USER:$NGINX_USER /var/www/html/beracode
-
-            # Set permissions: 755 for directories
+            # Ensure 'opc' has full permissions, and others can read/execute
             sudo chmod -R 755 /var/www/html/beracode
 
-      # --- IMPORTANT MODIFICATION: Synchronize Build Files To Server ---
-      # This step should use `rsync` or `scp` *into* the prepared directory.
-      # The `easingthemes/ssh-deploy` action's `TARGET` should point to the correct root.
+      # --- Synchronize Build Files To Server (no change needed here, it relies on previous step) ---
       - name: Synchronize Build Files To Server
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: "dist/" # This copies the *contents* of the 'dist' folder
+          SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.VPS_HOST }}
           REMOTE_USER: opc
-          TARGET: "/var/www/html/beracode/" # IMPORTANT: Added trailing slash to TARGET
+          TARGET: "/var/www/html/beracode/" # Trailing slash is important
           EXCLUDE: ".git/"
-          # Added flags for rsync to preserve permissions and ownership if possible,
-          # and to delete extraneous files on the remote.
-          ARGS: "-avz --delete"
+          ARGS: "-avz --delete" # These args are good
 
-      # --- IMPORTANT MODIFICATION: Add a comprehensive permission and restart step ---
-      # This step should run *after* files are transferred to set final permissions on new files
-      - name: Set Final File Permissions and Restart Nginx
+      # --- IMPORTANT NEW STEP: Set Final Nginx Permissions and Reload/Restart ---
+      # This step runs *after* rsync has completed, setting the final permissions for Nginx
+      - name: Set Final Nginx Permissions and Reload Nginx
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: opc
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Determine Nginx user
+            # Determine Nginx user (common on Oracle Linux/CentOS is 'nginx')
             NGINX_USER=$(grep -Po '^\s*user\s+\K[^;]+' /etc/nginx/nginx.conf | head -1 || echo 'nginx')
 
-            # Ensure all files and subdirectories have the correct ownership
-            # This is crucial if `easingthemes/ssh-deploy` doesn't preserve owner correctly
+            # Set ownership of all files and directories to the Nginx user
             sudo chown -R $NGINX_USER:$NGINX_USER /var/www/html/beracode
 
-            # Set permissions for files (644 for read-only by Nginx, others)
+            # Set file permissions (read-only for Nginx)
             sudo find /var/www/html/beracode -type f -exec chmod 644 {} \;
 
-            # Set permissions for directories (755 for read/execute by Nginx, others)
+            # Set directory permissions (read and execute for Nginx to traverse)
             sudo find /var/www/html/beracode -type d -exec chmod 755 {} \;
 
-            # Test Nginx configuration for syntax errors
+            # Test Nginx configuration
             sudo nginx -t
 
-            # If test is successful, restart Nginx
+            # If test is successful, reload Nginx (or restart if you prefer a full restart)
             if [ $? -eq 0 ]; then
-                echo "Nginx configuration test successful. Restarting Nginx..."
-                sudo systemctl restart nginx
+                echo "Nginx configuration test successful. Reloading Nginx..."
+                sudo systemctl reload nginx
+                # If 'reload' isn't enough for some reason, use 'restart':
+                # sudo systemctl restart nginx
             else
                 echo "Nginx configuration test failed. Check logs for errors."
                 exit 1 # Fail the workflow if Nginx test fails
