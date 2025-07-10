@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: './', // <--- ADD THIS LINE: This is crucial for fixing the build error
+  base: './', // <--- This line is CRUCIAL for resolving asset paths during build
   server: {
     host: "::",
     port: 8080,
@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   // Optionally, you can explicitly set the build output directory (often 'dist')
-  // build: {
-  //   outDir: 'dist',
-  // },
+  build: {
+    outDir: 'dist', // This ensures your build output goes into the 'dist' folder
+  }
 }));
