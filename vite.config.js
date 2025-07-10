@@ -5,8 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  // This is the line that needs to be here:
-  base: './', // <--- Confirm this line is present and correct!
+  base: './', // THIS LINE MUST BE HERE AND WITHOUT CONFLICT MARKERS
   server: {
     host: "::",
     port: 8080,
@@ -21,8 +20,8 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // You can also add this 'build' block for clarity, though 'base' is the primary fix
+  // Ensure your build output directory is 'dist' if it's commented out or missing
   build: {
-    outDir: 'dist', // Ensures output goes to the 'dist' folder
+    outDir: 'dist',
   }
 }));
