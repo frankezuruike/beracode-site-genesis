@@ -20,15 +20,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          # The checkout action already places repo contents at the workspace root
-          # So, 'beracode-site-genesis' is your current working directory here.
-          bun install # Install dependencies using Bun
+          bun install
 
       - name: Build Frontend
         run: |
-          # Again, 'beracode-site-genesis' is your current working directory.
-          bun run build # Run the build command using Bun
-        # This will create the 'dist' folder directly in the workspace root now
+          bun run build
 
       - name: Clean and Prepare Target Directory on Server
         uses: appleboy/ssh-action@v1.2.0
@@ -46,15 +42,15 @@ jobs:
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          # The SOURCE path is now just "dist/" because it's directly in the workspace root
-          SOURCE: "dist/"
+          SOURCE: "dist/" # Source is the built 'dist' folder
           REMOTE_HOST: ${{ secrets.VPS_HOST }}
           REMOTE_USER: ${{ secrets.VPS_USER }}
-          TARGET: "/var/www/html/beracode"
-          EXCLUDE: |
-            .git/
-            node_modules/
-            dist/
+          TARGET: "/var/www/html/beracode" # Your Nginx root directory
+          # Remove or simplify EXCLUDE.
+          # If your 'dist' folder truly only contains the final build assets,
+          # you often don't need extensive excludes.
+          # We'll remove the problematic ones.
+          EXCLUDE: ".git/" # Keep .git/ if there's any chance it's in source
 
       - name: Reload Nginx on Server
         uses: appleboy/ssh-action@v1.2.0
