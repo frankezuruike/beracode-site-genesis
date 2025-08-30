@@ -20,7 +20,7 @@ jobs:
         with:
           bun-version: latest
 
-      # Fixes the syntax for clearing Bun's cache
+      # This step clears Bun's cache to resolve package resolution errors
       - name: Clear Bun Cache
         run: bun cache clean
 
