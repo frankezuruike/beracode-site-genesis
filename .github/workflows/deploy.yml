@@ -21,7 +21,7 @@ jobs:
       # COMBINED STEP: This clears the Bun cache and then installs dependencies
       - name: Install Dependencies
         run: |
-          bun pm cache rm
+          rm -f bun.lockb
           bun install
 
       - name: Build Frontend
