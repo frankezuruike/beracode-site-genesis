@@ -21,8 +21,8 @@ jobs:
       # COMBINED STEP: This clears the Bun cache and then installs dependencies
       - name: Install Dependencies
         run: |
-          rm -f bun.lockb package-lock.json
-          bun install --force
+          rm -f bun.lockb package-lock.json yarn.lock
+          bun install --no-cache --force-latest
 
       - name: Build Frontend
         run: bun run build
