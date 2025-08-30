@@ -20,11 +20,12 @@ jobs:
         with:
           bun-version: latest
 
-      # COMBINED STEP: This clears the Bun cache and then installs dependencies
+      # This is the corrected syntax for clearing Bun's cache
+      - name: Clear Bun Cache
+        run: bun cache clean
+
       - name: Install Dependencies
-        run: |
-          bun cache clean
-          bun install
+        run: bun install
 
       - name: Build Frontend
         run: bun run build
