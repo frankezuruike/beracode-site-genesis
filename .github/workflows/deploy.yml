@@ -20,7 +20,7 @@ jobs:
         with:
           bun-version: latest
 
-      # NEW: This step clears Bun's cache to resolve package resolution errors
+      # Fixes the syntax for clearing Bun's cache
       - name: Clear Bun Cache
         run: bun cache clean
 
@@ -30,7 +30,7 @@ jobs:
       - name: Build Frontend
         run: bun run build
 
-      # Fixes permissions for the `rsync` command, allowing it to write to the folder
+      # Prepares the target directory on the server for the deploy
       - name: Prepare Target Directory for Rsync
         uses: appleboy/ssh-action@v1.2.0
         with:
