@@ -16,44 +16,63 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest # Or specify a precise version like '1.x.x'
+          bun-version: latest
 
+      # COMBINED STEP: This clears the Bun cache and then installs dependencies
       - name: Install Dependencies
         run: |
-          bun install
+          rm -f bun.lockb package-lock.json yarn.lock
+          bun install --no-cache --force-latest
 
       - name: Build Frontend
-        run: |
-          bun run build
+        run: bun run build
 
-      - name: Clean and Prepare Target Directory on Server
+      # Prepares the target directory on the server for the deploy
+      - name: Prepare Target Directory for Rsync
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: opc # Changed to opc
+          username: opc
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo rm -rf /var/www/html/beracode
             sudo mkdir -p /var/www/html/beracode
-            # Changed group to nginx, common for Nginx on Oracle Linux/RHEL
-            sudo chown -R opc:nginx /var/www/html/beracode
+            sudo chown -R opc:opc /var/www/html/beracode
             sudo chmod -R 755 /var/www/html/beracode
 
+      # Synchronizes build files to the server
       - name: Synchronize Build Files To Server
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.VPS_HOST }}
-          REMOTE_USER: opc # Changed to opc
-          TARGET: "/var/www/html/beracode"
+          REMOTE_USER: opc
+          TARGET: "/var/www/html/beracode/"
           EXCLUDE: ".git/"
+          ARGS: "-avz --delete"
 
-      - name: Reload Nginx on Server
+      # Sets final permissions for Nginx and reloads the web server
+      - name: Set Final Nginx Permissions and Reload Nginx
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: opc # Changed to opc
+          username: opc
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo systemctl reload nginx
+            NGINX_USER=$(grep -Po '^\s*user\s+\K[^;]+' /etc/nginx/nginx.conf | head -1 || echo 'nginx')
+            
+            sudo chown -R $NGINX_USER:$NGINX_USER /var/www/html/beracode
+            
+            sudo find /var/www/html/beracode -type f -exec chmod 644 {} \;
+            
+            sudo find /var/www/html/beracode -type d -exec chmod 755 {} \;
+            
+            sudo nginx -t
+            
+            if [ $? -eq 0 ]; then
+                echo "Nginx configuration test successful. Reloading Nginx..."
+                sudo systemctl reload nginx
+            else
+                echo "Nginx configuration test failed. Check logs for errors."
+                exit 1
+            fi
