@@ -25,12 +25,10 @@ jobs:
         run: bun cache clean
 
       - name: Install Dependencies
-        run: |
-          bun install
+        run: bun install
 
       - name: Build Frontend
-        run: |
-          bun run build
+        run: bun run build
 
       # Fixes permissions for the `rsync` command, allowing it to write to the folder
       - name: Prepare Target Directory for Rsync
