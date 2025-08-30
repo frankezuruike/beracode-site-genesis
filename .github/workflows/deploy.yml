@@ -1,5 +1,3 @@
-# .github/workflows/deploy.yml
-
 name: Deploy Lovable Frontend to OCI Prod
 
 on:
@@ -39,11 +37,11 @@ jobs:
           script: |
             # Ensure the parent directories exist
             sudo mkdir -p /var/www/html/beracode
-
+            
             # Set ownership of the target directory to 'opc' (your SSH user)
             # This allows rsync (running as 'opc') to write files
             sudo chown -R opc:opc /var/www/html/beracode
-
+            
             # Ensure 'opc' has full permissions, and others can read/execute
             sudo chmod -R 755 /var/www/html/beracode
 
@@ -70,19 +68,19 @@ jobs:
           script: |
             # Determine Nginx user (common on Oracle Linux/CentOS is 'nginx')
             NGINX_USER=$(grep -Po '^\s*user\s+\K[^;]+' /etc/nginx/nginx.conf | head -1 || echo 'nginx')
-
+            
             # Set ownership of all files and directories to the Nginx user
             sudo chown -R $NGINX_USER:$NGINX_USER /var/www/html/beracode
-
+            
             # Set file permissions (read-only for Nginx)
             sudo find /var/www/html/beracode -type f -exec chmod 644 {} \;
-
+            
             # Set directory permissions (read and execute for Nginx to traverse)
             sudo find /var/www/html/beracode -type d -exec chmod 755 {} \;
-
+            
             # Test Nginx configuration
             sudo nginx -t
-
+            
             # If test is successful, reload Nginx (or restart if you prefer a full restart)
             if [ $? -eq 0 ]; then
                 echo "Nginx configuration test successful. Reloading Nginx..."
