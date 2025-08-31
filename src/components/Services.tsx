@@ -1,107 +1,118 @@
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Menu, X, Code } from "lucide-react";
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Brain, Code2, Database, Zap, Smartphone, Globe, Bot, Shield } from "lucide-react";
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+const Services = () => {
+  const services = [
+    {
+      icon: Brain,
+      title: "AI & Machine Learning",
+      description: "Custom AI solutions, ML model development, and intelligent automation systems tailored to your business needs.",
+      features: ["Custom ML Models", "Predictive Analytics", "Natural Language Processing", "Computer Vision"]
+    },
+    {
+      icon: Code2,
+      title: "Full-Stack Development",
+      description: "End-to-end web and software development using modern technologies and best practices.",
+      features: ["React & Next.js", "Node.js & Python", "Cloud Integration", "API Development"]
+    },
+    {
+      icon: Database,
+      title: "Data Engineering",
+      description: "Build robust data pipelines, analytics platforms, and business intelligence solutions.",
+      features: ["Data Pipelines", "ETL Processes", "Real-time Analytics", "Data Visualization"]
+    },
+    {
+      icon: Bot,
+      title: "AI Chatbots & Automation",
+      description: "Intelligent chatbots and automation solutions to streamline your business processes.",
+      features: ["Custom Chatbots", "Process Automation", "24/7 AI Support", "Integration APIs"]
+    },
+    {
+      icon: Smartphone,
+      title: "Mobile Development",
+      description: "Native and cross-platform mobile applications with AI-powered features.",
+      features: ["iOS & Android", "React Native", "AI Integration", "Cloud Sync"]
+    },
+    {
+      icon: Globe,
+      title: "Web Applications",
+      description: "Modern, responsive web applications with integrated AI capabilities.",
+      features: ["PWA Development", "Real-time Features", "AI-Powered UX", "Performance Optimization"]
+    },
+    {
+      icon: Shield,
+      title: "AI Security Solutions",
+      description: "Implement AI-driven security measures to protect your digital assets.",
+      features: ["Threat Detection", "Anomaly Monitoring", "Secure AI Models", "Compliance Solutions"]
+    },
+    {
+      icon: Zap,
+      title: "AI Consulting",
+      description: "Strategic AI consulting to help you identify opportunities and implement AI solutions.",
+      features: ["AI Strategy", "Technology Assessment", "ROI Analysis", "Implementation Planning"]
     }
-    setIsMenuOpen(false);
-  };
+  ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+    <section id="services" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="p-2 hero-gradient rounded-lg">
-              <Code className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-xl font-bold gradient-text">BeraCode AI</span>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={() => scrollToSection('home')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => scrollToSection('services')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              Services
-            </button>
-            <button 
-              onClick={() => scrollToSection('about')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              About
-            </button>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              Contact
-            </button>
-            <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90">
-              Get Started
-            </Button>
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Our <span className="gradient-text">AI-Powered</span> Services
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            From concept to deployment, we deliver comprehensive AI solutions that transform 
+            your business operations and drive measurable results.
+          </p>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-4">
-              <button 
-                onClick={() => scrollToSection('home')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                Home
-              </button>
-              <button 
-                onClick={() => scrollToSection('services')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                Services
-              </button>
-              <button 
-                onClick={() => scrollToSection('about')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                About
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                Contact
-              </button>
-              <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90 w-full">
-                Get Started
-              </Button>
-            </nav>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {services.map((service, index) => (
+            <Card key={index} className="card-hover border-0 shadow-lg bg-white">
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto w-16 h-16 hero-gradient rounded-2xl flex items-center justify-center mb-4">
+                  <service.icon className="h-8 w-8 text-white" />
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-900">{service.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardDescription className="text-gray-600 mb-4 text-base leading-relaxed">
+                  {service.description}
+                </CardDescription>
+                <ul className="space-y-2">
+                  {service.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="text-sm text-gray-500 flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 bg-primary rounded-full mr-2"></span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center mt-16">
+          <div className="bg-white rounded-2xl p-8 shadow-xl max-w-4xl mx-auto">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Ready to Transform Your Business with AI?
+            </h3>
+            <p className="text-gray-600 mb-6 text-lg">
+              Let's discuss how our AI solutions can drive innovation and growth for your organization.
+            </p>
+            <button 
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors"
+            >
+              Schedule a Consultation
+            </button>
           </div>
-        )}
+        </div>
       </div>
-    </header>
+    </section>
   );
 };
 
-export default Header;
+export default Services;
