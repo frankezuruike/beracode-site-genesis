@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Code, Zap, Users, Mail } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,9 +19,11 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="p-2 hero-gradient rounded-lg">
-              <Code className="h-6 w-6 text-white" />
-            </div>
+            <img 
+              src="/logo.jpg" 
+              alt="BeraCode AI Logo" 
+              className="h-10 w-10 rounded-lg object-cover"
+            />
             <span className="text-xl font-bold gradient-text">BeraCode AI</span>
           </div>
 
