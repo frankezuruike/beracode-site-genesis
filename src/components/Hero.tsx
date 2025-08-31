@@ -1,107 +1,112 @@
-import { useState } from 'react';
+
 import { Button } from "@/components/ui/button";
-import { Menu, X, Code } from "lucide-react";
+import { ArrowRight, Sparkles, Rocket, Zap } from "lucide-react";
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
+const Hero = () => {
+  const scrollToContact = () => {
+    const element = document.getElementById('contact');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    setIsMenuOpen(false);
+  };
+
+  const scrollToServices = () => {
+    const element = document.getElementById('services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="p-2 hero-gradient rounded-lg">
-              <Code className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-xl font-bold gradient-text">BeraCode AI</span>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={() => scrollToSection('home')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => scrollToSection('services')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              Services
-            </button>
-            <button 
-              onClick={() => scrollToSection('about')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              About
-            </button>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-primary transition-colors"
-            >
-              Contact
-            </button>
-            <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90">
-              Get Started
-            </Button>
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-4">
-              <button 
-                onClick={() => scrollToSection('home')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                Home
-              </button>
-              <button 
-                onClick={() => scrollToSection('services')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                Services
-              </button>
-              <button 
-                onClick={() => scrollToSection('about')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                About
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
-              >
-                Contact
-              </button>
-              <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90 w-full">
-                Get Started
-              </Button>
-            </nav>
-          </div>
-        )}
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 hero-gradient opacity-95"></div>
+      
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-float" style={{animationDelay: '4s'}}></div>
       </div>
-    </header>
+
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center">
+        <div className="max-w-4xl mx-auto">
+          {/* Badge */}
+          <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-sm font-medium mb-8 animate-slide-up">
+            <Sparkles className="h-4 w-4 mr-2" />
+            Revolutionizing Development with AI
+          </div>
+
+          {/* Main Heading */}
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-slide-up" style={{animationDelay: '0.2s'}}>
+            AI-Powered
+            <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+              Solutions
+            </span>
+            <span className="block">by BeraCode</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{animationDelay: '0.4s'}}>
+            Transform your business with cutting-edge AI development solutions. 
+            We create intelligent systems that drive innovation, efficiency, and growth.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-slide-up" style={{animationDelay: '0.6s'}}>
+            <Button 
+              size="lg" 
+              onClick={scrollToContact}
+              className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-4 h-auto font-semibold group"
+            >
+              Start Your Project
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={scrollToServices}
+              className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 text-lg px-8 py-4 h-auto font-semibold backdrop-blur-sm"
+            >
+              Explore Services
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto animate-slide-up" style={{animationDelay: '0.8s'}}>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Rocket className="h-6 w-6 text-yellow-300 mr-2" />
+                <span className="text-3xl font-bold text-white">50+</span>
+              </div>
+              <p className="text-white/80">Projects Delivered</p>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Zap className="h-6 w-6 text-yellow-300 mr-2" />
+                <span className="text-3xl font-bold text-white">98%</span>
+              </div>
+              <p className="text-white/80">Client Satisfaction</p>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Sparkles className="h-6 w-6 text-yellow-300 mr-2" />
+                <span className="text-3xl font-bold text-white">24/7</span>
+              </div>
+              <p className="text-white/80">AI-Powered Support</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+        </div>
+      </div>
+    </section>
   );
 };
 
-export default Header;
+export default Hero;
