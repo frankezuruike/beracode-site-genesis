@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Code } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,13 +18,9 @@ const Header = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="flex-shrink-0">
-              <img 
-                src="/logo.png" 
-                alt="BeraCode AI Logo" 
-                className="h-12 w-12 object-contain"
-              />
+          <div className="flex items-center space-x-2">
+            <div className="p-2 hero-gradient rounded-lg">
+              <Code className="h-6 w-6 text-white" />
             </div>
             <span className="text-xl font-bold gradient-text">BeraCode AI</span>
           </div>
