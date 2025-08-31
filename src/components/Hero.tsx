@@ -1,57 +1,107 @@
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { Menu, X, Code } from "lucide-react";
 
-const Hero = () => {
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with gradient */}
-      <div className="absolute inset-0 hero-gradient opacity-90" />
-      
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-10 left-[10%] animate-float">
-          <Sparkles className="w-6 h-6 text-primary-foreground/30" />
-        </div>
-        <div className="absolute top-[20%] right-[15%] animate-float" style={{ animationDelay: "2s" }}>
-          <Zap className="w-8 h-8 text-primary-foreground/20" />
-        </div>
-        <div className="absolute bottom-[30%] left-[20%] animate-float" style={{ animationDelay: "4s" }}>
-          <Sparkles className="w-4 h-4 text-primary-foreground/40" />
-        </div>
-      </div>
-
-      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-        <div className="animate-slide-up">
-          <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6">
-            <span className="gradient-text">BeraCode</span> AI
-          </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Transform your business with cutting-edge AI solutions. 
-            Custom software development powered by artificial intelligence.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              variant="secondary"
-              className="group text-lg px-8 py-4 bg-primary-foreground/10 border border-primary-foreground/20 hover:bg-primary-foreground/20 text-primary-foreground"
-            >
-              Get Started Today
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-            
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="text-lg px-8 py-4 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-            >
-              View Our Work
-            </Button>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <div className="p-2 hero-gradient rounded-lg">
+              <Code className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-xl font-bold gradient-text">BeraCode AI</span>
           </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <button 
+              onClick={() => scrollToSection('home')}
+              className="text-gray-700 hover:text-primary transition-colors"
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => scrollToSection('services')}
+              className="text-gray-700 hover:text-primary transition-colors"
+            >
+              Services
+            </button>
+            <button 
+              onClick={() => scrollToSection('about')}
+              className="text-gray-700 hover:text-primary transition-colors"
+            >
+              About
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="text-gray-700 hover:text-primary transition-colors"
+            >
+              Contact
+            </button>
+            <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90">
+              Get Started
+            </Button>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200">
+            <nav className="flex flex-col space-y-4">
+              <button 
+                onClick={() => scrollToSection('home')}
+                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => scrollToSection('services')}
+                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
+              >
+                Services
+              </button>
+              <button 
+                onClick={() => scrollToSection('about')}
+                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
+              >
+                About
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="text-left text-gray-700 hover:text-primary transition-colors py-2"
+              >
+                Contact
+              </button>
+              <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90 w-full">
+                Get Started
+              </Button>
+            </nav>
+          </div>
+        )}
       </div>
-    </section>
+    </header>
   );
 };
 
-export default Hero;
+export default Header;
