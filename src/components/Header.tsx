@@ -20,9 +20,9 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img 
-              src="/logo.jpg" 
+              src="/logo.png" 
               alt="BeraCode AI Logo" 
-              className="h-10 w-10 rounded-lg object-cover"
+              className="h-10 w-10 rounded-lg object-contain"
             />
             <span className="text-xl font-bold gradient-text">BeraCode AI</span>
           </div>
