@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Rocket, Zap } from "lucide-react";
 
@@ -66,7 +65,7 @@ const Hero = () => {
               size="lg" 
               variant="outline" 
               onClick={scrollToServices}
-              className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 text-lg px-8 py-4 h-auto font-semibold backdrop-blur-sm"
+              className="border-white/50 text-white hover:bg-white/10 hover:border-white bg-transparent text-lg px-8 py-4 h-auto font-semibold backdrop-blur-sm"
             >
               Explore Services
             </Button>
