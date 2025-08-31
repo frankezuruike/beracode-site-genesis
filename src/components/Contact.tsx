@@ -64,21 +64,21 @@ const Contact = () => {
       icon: Mail,
       title: "Email Us",
       description: "Get in touch via email",
-      value: "hello@beracode.ai",
+      value: "info@beracodeai.com",
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Phone,
       title: "Call Us",
       description: "Speak with our team",
-      value: "+1 (555) 123-4567",
+      value: "+2347062029109",
       color: "from-green-500 to-emerald-500"
     },
     {
       icon: MapPin,
       title: "Visit Us",
       description: "Our office location",
-      value: "San Francisco, CA",
+      value: "Brains and Hammers City, Life Camp, Abuja, Nigeria",
       color: "from-purple-500 to-pink-500"
     }
   ];
